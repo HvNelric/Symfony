@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{# surcharge du bloc title défini dans la base.html.twig#}
+{% block title %}
+    {# parent() permet de reporendre le contenu du bloc que l'on surcharge au lieu de le remplacer#}
+    {{ parent() }} - Page Twig    
+{% endblock %}
+{% block body %}
+    {# définie une variable #}
+    {% set test = 'variable de test' %}
+    {# concaténation avec ~ #}
+    <h2>{{ test ~ '!' }}</h2>
+    
+    {{ dump(test)}}
+    
+    {% if test != '' %}
+        <p>test n'est pas vide</p>
+    {% else %}
+        <p>test vide </p>
+    {% endif %}
+    
+    {% set vrai = true %}
+    {% set faux = false %}
+    {# not pour ! #}
+    {% if not faux %}
+        <p>c'est pas faux</p>
+    {% endif %}
+    
+    {# AND et OR en toute lettre#}
+    {# if ($vrai && !$faux) #}
+    {% if vrai and not faux %}
+        <p>vrai est vrai et faux n'est pas vrai</p>
+    {% endif %}
+    
+    {% set tab = [1, 2, 3, 4] %}
+    
+    {# foreach ($tab as $nb) #}
+    {% for nb in tab %}
+        {{ nb }}<br>
+    {% endfor %}
+    {# tableau associatif #}
+    {% set hash = {foo: "Foo", bar: "Baz"} %}
+    
+    {% for key, value in hash %}
+        {{ key }} : {{ value }}
+    {% endfor %}
+    
+    <p>{{ hash['bar'] }}</p>
+    {# peut aussi s'écrire : #}
+    <p>{{ hash.bar }}</p>
+    
+    {% set vide = [] %}
+    
+    {% for element in vide %}
+        {{ element }}
+    {% else %}
+        <p>Le tableau est vide</p>
+    {% endfor %}
+    
+    {# la variable loop nous est toujours donnée dans une boucle :#}
+    {% for nb in tab %}
+        {{ dump(loop.index) }}<br>
+        tour de boucle (index 0) :
+        {{ dump(loop.index0) }}<br>
+        {{ nb }}<br>
+    {% endfor %}
+
+    {# Test avec IS #}
+
+    {# if (isset($test)) #}
+    {% if text is define %}
+        <p>La variable "test" existe</p>
+    {% endif %}
+
+    {% if test is not null %}
+        <p>La variable "test" n'est pas bulle</p>
+    {% endif %}
+
+    {# if (!empty($test)) #}
+    {% if test is not empty %}
+        <p>Lz variable "test" n'est pas vide</p>
+    {% endif %}
+
+    {# if(in_array(2, $tab)) #}
+    {% if 2 in tab %}
+        <p>tab contient 2</p>
+    {% endif %}
+
+    {# even et odd pour pair et impair #}
+    {% if tab.1 is even %}
+        <p>Le 2e élément de tab est pair</p>
+    {% endif %}
+
+    {% set ten = 10 %}
+
+    {% if ten is divisible by (5) %}
+        <p>10 est divisible par 5</p>
+    {% endif %}
+
+    {# Filtres #}
+
+    {# strtoupper{$test} #}
+    <p>{{ test|upper }}</p>
+    {# default s'applique si la variable est vide (empty) #}
+    <p>{{ var|default('var est vide') }}</p>
+
+    {%  set html = '<p> un paragraphe</p>' %}
+
+    {# par defaut le html est échappé #}
+    {{ html }}
+    {# pour ne pas avoir le HTML échappé #}
+    {{ <html|raw }}
+
+    {# filtre de formatage de date #}
+    <p>{{ '2018-01-05'|date('d/m/Y') }}</p>
+
+    {# auj est un objet DateTime passé par le controleur #}
+    <p>{{ auj|date('d/m/Y H:i:s') }}</p>
+
+    {# first et last : 1er et dernier élément d'un tableau #}
+    <p>{{ tab|first }}</p>
+
+
+
+{% endblock %}
