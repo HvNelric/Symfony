@@ -120,6 +120,16 @@
     {# first et last : 1er et dernier élément d'un tableau #}
     <p>{{ tab|first }}</p>
 
+    {# inclusion de fichier #}
+    {%  include 'index/inclus.html.twig' %}
+
+    {# only pour ne pas passer les variables au fichier inclus #}
+    {%  include 'index/inclus.html.twig' only %}
+
+    {%  include 'index/inclus.html.twig' with {foo: 'crée pour inclus'} %}
+
+    {# ne passe que la variable fo au fichier inclus #}
+    {%  include 'index/inclus.html.twig' with {foo: 'crée pour inclus'} only %}
 
 
 {% endblock %}
